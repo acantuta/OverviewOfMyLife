@@ -1,0 +1,75 @@
+﻿@page "/"
+@using System.Globalization
+
+<PageTitle>Index</PageTitle>
+
+<style>
+    .grid {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%; /* Adjust width to your preference */
+    }
+
+    .active-square {
+        width: 3px;
+        height: 3px;
+        margin: 1px;
+        background-color: greenyellow; /* Adjust color to your preference */
+    }
+
+    .inactive-square {
+        width: 3px;
+        height: 3px;
+        margin: 1px;
+        background-color: lightgrey; /* Adjust color to your preference */
+    }
+</style>
+
+<h1>Anthony Cantuta - Edad @age - @startDateTime.ToString("dd/MMMM/yyyy", new CultureInfo("es-ES"))</h1>
+<h2>Días vividos @livedDays - Días restantes @daysLeft (50 años)</h2>
+
+<div class="grid">
+    @foreach(var day in listOfDays)
+    {
+        if (day < today)
+        {
+            <div class="active-square"></div>
+        }
+        else
+        {
+            <div class="inactive-square"></div>
+        }
+    }    
+</div>
+
+@code{
+    DateTime startDateTime;
+    DateTime today;
+    DateTime lastDateTime;
+    int age;
+    int livedDays;
+    int daysLeft;
+    List<DateTime> listOfDays = new List<DateTime>();
+
+    protected override void OnInitialized()
+    {
+        startDateTime = new DateTime(1989, 4, 12);
+        today = DateTime.Today;
+        lastDateTime = new DateTime(2039, 4, 12);
+        TimeSpan diffTodayStart = today - startDateTime;
+        TimeSpan diffLastToday = lastDateTime - today;
+        livedDays = diffTodayStart.Days;
+        age = today.Year - startDateTime.Year;
+        daysLeft = diffLastToday.Days;
+
+        var tempDateTime = new DateTime(startDateTime.Year, startDateTime.Month, startDateTime.Day);
+
+        while (tempDateTime < lastDateTime)
+        {
+            listOfDays.Add(tempDateTime);
+            tempDateTime = tempDateTime.AddDays(1);
+        }
+
+    }
+
+}
