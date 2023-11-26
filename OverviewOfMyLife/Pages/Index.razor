@@ -5,23 +5,37 @@
 
 <style>
     .grid {
-        display: flex;
-        flex-wrap: wrap;
-        width: 100%; /* Adjust width to your preference */
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 3px); /* Crear columnas del tamaño del cuadrado */
+        grid-template-rows: repeat(auto-fill, 3px); /* Crear columnas del tamaño del cuadrado */
+        gap: 1px; /* Espacio entre cuadrados */
+        width: 100%;
+    }
+
+    .active-square, .inactive-square, .month-label {
+        
     }
 
     .active-square {
-        width: 3px;
-        height: 3px;
-        margin: 1px;
-        background-color: greenyellow; /* Adjust color to your preference */
+        background-color: greenyellow;
     }
 
     .inactive-square {
-        width: 3px;
-        height: 3px;
-        margin: 1px;
-        background-color: lightgrey; /* Adjust color to your preference */
+        background-color: lightgrey;
+    }
+    .month-label {
+        grid-column: span 2;
+        float:left;
+        overflow: hidden;
+        font-size: 4px;
+    }
+
+    .year-label {
+        grid-column: span 3;
+        background: gray;
+        font-size: 4px;
+        float: left;
+        overflow: hidden;
     }
 </style>
 
@@ -33,12 +47,28 @@
     {
         if (day < today)
         {
-            <div class="active-square"></div>
+            <div class="active-square">
+                
+            </div>
         }
         else
         {
-            <div class="inactive-square"></div>
+            <div class="inactive-square">
+
+            </div>
         }
+        if (IsFirstMonth(day) && IsFirstDayOfMonth(day))
+        {
+            <div class="year-label"> @day.Year </div>
+        }
+
+
+        if (IsFirstDayOfMonth(day))
+        {
+            <div class="month-label"> <!-- Multiplicar por el tamaño y margen del cuadrado --> @day.ToString("MMM", new CultureInfo("es-ES")) </div>
+        }
+
+        
     }    
 </div>
 
@@ -72,4 +102,6 @@
 
     }
 
+    bool IsFirstDayOfMonth(DateTime date) { return date.Day == 1; }
+    bool IsFirstMonth(DateTime date){ return date.Month == 1;}
 }
