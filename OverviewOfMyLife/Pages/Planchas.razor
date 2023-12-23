@@ -1,0 +1,47 @@
+﻿@page "/planchas"
+@using OverviewOfMyLife.Models
+@inject OverviewOfMyLife.Services.NotionService NotionService
+
+<h3>Planchas</h3>
+
+@if (planchaItems == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!planchaItems.Any())
+{
+    <p>No data found.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Cantidad</th>
+                <th>Descripcion</th>
+                <!-- Add other columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in planchaItems)
+            {
+                <tr>
+                    <td>@item.Date.ToString("yyyy-MM-dd")</td> <!-- Format the date as you prefer -->
+                    <td>@item.Cantidad1</td>
+                    <td>@item.Descripcion</td>
+                    <!-- Add other fields as needed -->
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<PlanchaItem> planchaItems;
+
+    protected override async Task OnInitializedAsync()
+    {
+        planchaItems = await NotionService.GetPlanchasDataAsync();
+    }
+}
