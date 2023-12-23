@@ -31,7 +31,7 @@ namespace OverviewOfMyLife.Services
                 string dateProperty = result.Properties["Date"].date.start;
                 var cantidadProperty = result.Properties["Cantidad1"].number;
                 var descripcionProperty = result.Properties["Descripcion"].title.Count > 0
-                    ? result.Properties["Descripcion"].title[0].Text.Content
+                    ? result.Properties["Descripcion"].title[0].text.content
                     : string.Empty; // Assuming the first title text contains the description
 
                 planchaItems.Add(new PlanchaItem
