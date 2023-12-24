@@ -16,6 +16,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 // Bind Notion settings and add NotionService
 var notionSettings = builder.Configuration.GetSection("NotionSettings").Get<NotionSettings>();
 builder.Services.AddSingleton(notionSettings);
+builder.Services.AddSingleton<PlanchasService>();
 
 builder.Services.AddHttpClient<NotionService>(client =>
 {

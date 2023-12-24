@@ -1,47 +1,52 @@
 ﻿@page "/planchas"
 @using OverviewOfMyLife.Models
-@inject OverviewOfMyLife.Services.NotionService NotionService
+@using OverviewOfMyLife.Models.Charts.ProgressBar
+@inject OverviewOfMyLife.Services.PlanchasService PlanchasService
 
 <h3>Planchas</h3>
 
-@if (planchaItems == null)
+<style>
+    .square
+    {
+        height: 15px;
+        width: 15px;
+    }
+
+    .progress-bar
+    {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 15px); /* Crear columnas del tamaño del cuadrado */
+        grid-template-rows: repeat(auto-fill, 15px); /* Crear columnas del tamaño del cuadrado */
+        gap: 1px; /* Espacio entre cuadrados */
+        width: 100%;
+        background-color: black;
+        font-size: 8px;
+    }
+</style>
+
+@if (progressBar == null)
 {
     <p><em>Loading...</em></p>
 }
-else if (!planchaItems.Any())
+else if (!progressBar.Events.Any())
 {
     <p>No data found.</p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Cantidad</th>
-                <th>Descripcion</th>
-                <!-- Add other columns as needed -->
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in planchaItems)
-            {
-                <tr>
-                    <td>@item.Date.ToString("yyyy-MM-dd")</td> <!-- Format the date as you prefer -->
-                    <td>@item.Cantidad1</td>
-                    <td>@item.Descripcion</td>
-                    <!-- Add other fields as needed -->
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="progress-bar">
+        @foreach (var item in progressBar.Events)
+        {
+            <div class="square" style="background-color: @item.Color">@item.DateTime.Day</div>
+        }
+    </div>
 }
 
 @code {
-    private List<PlanchaItem> planchaItems;
+    private ProgressBar progressBar;
 
     protected override async Task OnInitializedAsync()
     {
-        planchaItems = await NotionService.GetPlanchasDataAsync();
+        progressBar = await PlanchasService.GetProgressBar();
     }
 }
